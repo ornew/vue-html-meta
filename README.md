@@ -1,6 +1,6 @@
 # vue-html-meta
 
-Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue
+Easy rendering HTML meta tags for Vue.js (with SSR)
 
 ## Usage
 
@@ -8,15 +8,25 @@ Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue
 <script setup>
 import { AppMeta } from 'vue-html-meta'
 
-const jsonld = { /**/ }
+const jsonld = {
+  '@context': 'https://schema.org',
+  ...
+}
 </script>
 
 <template>
 
-  <!-- Reender meta tags in head until to unmount this component. -->
+  <!-- Render meta tags in head until to unmount this component. -->
   <AppMeta title="My Page" :jsonld="jsonld">
+  <!--
+    <title>My Page</title>
+    <script type="application/json+ld">{
+      "@context": "https://schema.org"
+    }</script>
+  -->
 
   <p>My Page</p>
+  <!-- ... -->
 </template>
 ```
 
