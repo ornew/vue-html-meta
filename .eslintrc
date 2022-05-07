@@ -1,0 +1,16 @@
+{
+  "root": true,
+  "env": {
+    "es2022": true
+  },
+  "parserOptions": {
+    "parser": "babel-eslint",
+    "sourceType": "module"
+  },
+  "extends": [
+    "plugin:unicorn/all"
+  ],
+  "globals": {
+    "Vue": "readable"
+  },
+}
