@@ -6,78 +6,77 @@ import {
   onMounted,
   onUnmounted,
   onServerPrefetch,
-
   App,
   Ref,
-} from 'vue'
+} from "vue";
 
-const key = Symbol()
+const key = Symbol();
 
 interface MetaPluginOptions {
-  ssr?: boolean
+  ssr?: boolean;
 }
 
 interface _VNode {
-  tag: string
-  attrs?: object
-  text?: string
+  tag: string;
+  attributes?: object;
+  text?: string;
 }
 
 class MetaPlugin {
-  private _options: MetaPluginOptions
-  private _tags: Ref<_VNode[]>
-  private _els: HTMLElement[]
+  private _options: MetaPluginOptions;
+  private _tags: Ref<_VNode[]>;
+  private _els: HTMLElement[];
 
   constructor(options: MetaPluginOptions) {
-    this._options = options
-    this._tags = ref([])
-    this._els = []
+    this._options = options;
+    this._tags = ref([]);
+    this._els = [];
     if (!this._options.ssr) {
       watch(this._tags, (_new, {}) => {
-        for (const el of this._els) {
-          document.head.removeChild(el)
+        for (const element of this._els) {
+          element.remove();
         }
-        this._els = _new.map(c => toDOMElement(c))
-        for (const el of this._els) {
-          document.head.appendChild(el)
+        this._els = _new.map((c) => toDOMElement(c));
+        for (const element of this._els) {
+          document.head.append(element);
         }
-      })
+      });
     }
   }
 
   setTags(tags: _VNode[]) {
-    this._tags.value = tags
+    this._tags.value = tags;
   }
 
   install(app: App) {
-    app.config.globalProperties.$meta = this
-    app.provide(key, this)
+    app.config.globalProperties.$meta = this;
+    app.provide(key, this);
   }
 }
 
 export function createMeta(options: MetaPluginOptions): MetaPlugin {
-  return new MetaPlugin(options)
+  return new MetaPlugin(options);
 }
 
 export function injectMeta(): MetaPlugin | undefined {
-  return inject(key)
+  return inject(key);
 }
 
-function toDOMElement({ tag, attrs, text }: _VNode): HTMLElement {
-  const el = document.createElement(tag)
-  if (attrs) {
-    for (const [k, v] of <[string, string][]>Object.entries(attrs)) {
-      el.setAttribute(k, v)
+function toDOMElement({ tag, attributes, text }: _VNode): HTMLElement {
+  const element = document.createElement(tag);
+  if (attributes) {
+    for (const [k, v] of <[string, string][]>Object.entries(attributes)) {
+      element.setAttribute(k, v);
     }
   }
   if (!!text) {
-    el.appendChild(document.createTextNode(text))
+    element.append(document.createTextNode(text));
   }
-  return el
+  return element;
 }
 
 export const AppMeta = {
-  name: 'AppMeta',
+  name: "AppMeta",
   inheritAttrs: false,
 
   props: {
@@ -88,7 +87,7 @@ export const AppMeta = {
     meta: {
       type: Array,
       required: false,
-      default: () => ([]),
+      default: () => [],
     },
     jsonld: {
       type: Object,
@@ -96,31 +95,42 @@ export const AppMeta = {
     },
   },
 
-  setup({ title, meta, jsonld }: {
-    title?: string,
-    meta: object[],
-    jsonld?: object,
+  setup({
+    title,
+    meta,
+    jsonld,
+  }: {
+    title?: string;
+    meta: object[];
+    jsonld?: object;
   }) {
-    const $meta = injectMeta()
-    const space = import.meta.env.DEV ? 2 : undefined
+    const $meta = injectMeta();
+    const space = import.meta.env.DEV ? 2 : undefined;
     const tags: _VNode[] = [
-      {tag: 'title', attrs: {}, text: title},
-      ...meta?.map((attrs: object) => ({ tag: 'meta', attrs })),
-      ...(!jsonld ? []
-        : [{tag: 'script', attrs: {type: 'application/ld+json'}, text: JSON.stringify(jsonld, undefined, space)}]),
-    ]
+      { tag: "title", attrs: {}, text: title },
+      ...meta?.map((attributes: object) => ({ tag: "meta", attributes })),
+      ...(!jsonld
+        ? []
+        : [
+            {
+              tag: "script",
+              attrs: { type: "application/ld+json" },
+              text: JSON.stringify(jsonld, undefined, space),
+            },
+          ]),
+    ];
     onMounted(() => {
-      $meta?.setTags(tags)
+      $meta?.setTags(tags);
       //document.title = title
-    })
+    });
     onServerPrefetch(() => {
-      $meta?.setTags(tags)
-    })
+      $meta?.setTags(tags);
+    });
     onUnmounted(() => {
-      $meta?.setTags([])
-    })
+      $meta?.setTags([]);
+    });
     return () => {
-      return h('div')
+      return h("div");
       /*
       return h(
         Teleport,
@@ -128,6 +138,6 @@ export const AppMeta = {
         children,
       )
       */
-    }
+    };
   },
-}
+};
