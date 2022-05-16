@@ -16,7 +16,7 @@ const jsonld = {
 
 <template>
 
-  <!-- Render meta tags in head until to unmount this component. -->
+  <!-- Render meta tags in <head> until to unmount this component. -->
   <AppMeta title="My Page" :jsonld="jsonld">
   <!--
     <title>My Page</title>
@@ -30,34 +30,58 @@ const jsonld = {
 </template>
 ```
 
-## Server Side Rendering (SSR)
+## Install
 
-### Vite.js
+```
+npm inatll vue-html-meta
+
+# if you use yarn
+yarn add vue-html-meta
+```
+
+Create and install the plugin to your Vue app:
 
 ```js
 import { createMeta } from 'vue-html-meta'
 
 const app = createSSRApp(App)
+
+// create meta plugin
 const meta = createMeta()
 app.use(meta)
+```
 
-// ...
+## Server Side Rendering (SSR)
 
+### Vite.js
+
+Learn more about SSR: ["Server-Side Rendering | Vite"](https://vitejs.dev/guide/ssr.html)
+
+```js
 // SSR logic
 const appHtml = await renderToString(app, ctx)
 const metaHtml = await renderMeta(meta)
 
 const html = template
-  .replace(`<!--preload-links-->`, preloadLinksHtml)
   .replace(`<!--app-->`, appHtml)
   .replace(`<!--meta-->`, metaHtml)
 ```
 
 ## Components
 
-### `AppMeta`
+### `<AppMeta>`
 
-TBW
+```
+interface Props {
+  title?: string
+  meta?: Meta
+}
+
+interface Meta {
+}
+```
+
+## Known Issues
 
 ## License
 

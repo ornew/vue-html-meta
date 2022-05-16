@@ -4,11 +4,15 @@
     "es2022": true
   },
   "parserOptions": {
-    "parser": "babel-eslint",
+    "parser": "@typescript-eslint/parser",
     "sourceType": "module"
   },
+  "plugins": [
+    "@typescript-eslint",
+  ],
   "extends": [
-    "plugin:unicorn/all"
+    //"plugin:unicorn/all",
+    "plugin:@typescript-eslint/recommended",
   ],
   "globals": {
     "Vue": "readable"
