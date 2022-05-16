@@ -1,5 +1,9 @@
 {
-  "include": ["src"],
+  "include": [
+    "./src",
+    "./.eslintrc.js",
+    "./vite.config.ts"
+  ],
   "exclude": ["**/*.spec.ts"],
   "compilerOptions": {
     "target": "esnext",

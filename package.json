@@ -15,9 +15,9 @@
     "prettier:base": "prettier --parser typescript --single-quote",
     "prettier:check": "yarn prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "yarn prettier:base -- --write \"src/**/*.{ts,tsx}\"",
-    "precommit": "yarn prettier:write",
     "release": "standard-version",
-    "postrelease": "git push --follow-tags origin master && npm publish"
+    "postrelease": "git push --follow-tags origin master && npm publish",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -37,17 +37,15 @@
   },
   "homepage": "https://github.com/ornew/vue-html-meta#readme",
   "node": ">=14.16",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint"
-    }
-  },
   "lint-staged": {
-    "*.{js,ts}": "eslint --cache --fix",
-    "*.{js,ts}": "prettier --write"
+    "*.{js,ts}": "prettier --write",
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   },
   "devDependencies": {
     "@types/jest": "^27.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "esbuild": "^0.14.39",
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
