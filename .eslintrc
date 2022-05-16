@@ -11,8 +11,11 @@
     "@typescript-eslint",
   ],
   "extends": [
-    //"plugin:unicorn/all",
+    "plugin:unicorn/all",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier",
+    "prettier/@typescript-eslint",
   ],
   "globals": {
     "Vue": "readable"
