@@ -12,8 +12,8 @@ class MetaPlugin {
   private _tags: Ref<VNode[]>
   private _els: HTMLElement[]
 
-  constructor(options: MetaPluginOptions) {
-    this._options = options
+  constructor(options?: MetaPluginOptions) {
+    this._options = options || {}
     this._tags = ref([])
     this._els = []
     if (!this._options.ssr) {
@@ -39,11 +39,11 @@ class MetaPlugin {
   }
 }
 
-export function createMeta(options: MetaPluginOptions): MetaPlugin {
+export function createMeta(options?: MetaPluginOptions): MetaPlugin {
   return new MetaPlugin(options)
 }
 
-export function injectMeta(): MetaPlugin | undefined {
+export function useMeta(): MetaPlugin | undefined {
   return inject(key)
 }
 
@@ -81,18 +81,24 @@ export const AppMeta = defineComponent({
   },
 
   setup(props) {
-    const $meta = injectMeta()
+    const $meta = useMeta()
     const space = 2 /* import.meta.env.DEV ? 2 : undefined */
-    const tags = <VNode[]>[h('title', {}, props.title), ...props.meta?.map((props) => h('meta', props))]
-    if (!props.jsonld) {
-      tags.push(h('script', { type: 'application/ld+json' }, JSON.stringify(props.jsonld, undefined, space)))
-    }
-    onMounted(() => {
+    const setTags = () => {
+      const tags = <VNode[]>[h('title', {}, props.title), ...props.meta?.map((props) => h('meta', props))]
+      if (props.jsonld) {
+        tags.push(h('script', { type: 'application/ld+json' }, JSON.stringify(props.jsonld, undefined, space)))
+      }
       $meta?.setTags(tags)
+    }
+    watch(props, ({}, {}) => {
+      setTags()
+    })
+    onMounted(() => {
+      setTags()
       //document.title = title
     })
     onServerPrefetch(() => {
-      $meta?.setTags(tags)
+      setTags()
     })
     onUnmounted(() => {
       $meta?.setTags([])
