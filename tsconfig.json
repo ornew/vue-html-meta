@@ -40,7 +40,7 @@
     "checkJs": true,
 
     "types": [
-      "vite/client", // import.meta.env
+      //"vite/client", // need when use import.meta.env
     ],
 
     "strict": true,
