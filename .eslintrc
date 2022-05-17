@@ -8,15 +8,25 @@
     "sourceType": "module",
     "project": "./tsconfig.json",
   },
-  "plugins": [
-    "@typescript-eslint",
-  ],
   "extends": [
     "plugin:unicorn/all",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier",
   ],
+  "plugins": [
+    "@typescript-eslint",
+  ],
+  "rules": {
+    "unicorn/prevent-abbreviations": [
+      "error",
+      {
+        "replacements": {
+          "props": false,
+        },
+      },
+    ],
+  },
   "globals": {
     "Vue": "readable"
   },
