@@ -3,21 +3,39 @@
   "version": "0.1.0",
   "description": "Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue",
   "type": "module",
-  "exports": "src/index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./types/main.d.ts",
+  "files": [
+    "/dist",
+    "/types"
+  ],
+  "exports": {
+    "import": "dist/index.mjs",
+    "require": "dist/index.cjs"
+  },
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build": "node ./scripts/build.mjs",
-    "prepublishOnly": "run-s build changelog",
+    "clean": "rimraf dist",
+    "build": "run-p build:*",
+    "lint": "run-p lint:*",
+    "fix": "run-s fix:esbuild fix:prettier",
     "test": "run-p test:*",
-    "test:unit": "jest",
-    "test:e2e": "jest --testMatch '**/*.e2e.ts'",
-    "lint": "eslint src",
-    "prettier:base": "prettier --parser typescript --single-quote",
-    "prettier:check": "yarn prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
-    "prettier:write": "yarn prettier:base -- --write \"src/**/*.{ts,tsx}\"",
-    "release": "standard-version",
-    "postrelease": "git push --follow-tags origin master && npm publish",
-    "prepare": "husky install"
+    "build:esbuild": "node ./scripts/build.mjs",
+    "build:tsc": "tsc",
+    "test:unit": "jest --passWithNoTests",
+    "lint:eslint": "eslint src",
+    "fix:eslint": "eslint src --fix",
+    "lint:prettier": "prettier --check -- \"src/**/*.{ts,tsx}\"",
+    "fix:prettier": "prettier --write -- \"src/**/*.{ts,tsx}\"",
+    "postrelease": "git push --follow-tags origin main && npm publish",
+    "prepare": "echo hello",
+    "prepublishOnly": "run-s clean build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint && yarn test",
+      "pre-push": "yarn lint && yarn test"
+    }
   },
   "repository": {
     "type": "git",
@@ -37,11 +55,6 @@
   },
   "homepage": "https://github.com/ornew/vue-html-meta#readme",
   "node": ">=14.16",
-  "lint-staged": {
-    "*.{js,ts}": "prettier --write",
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
-  },
   "devDependencies": {
     "@types/jest": "^27.5.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
@@ -53,13 +66,11 @@
     "glob": "^8.0.3",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
-    "lint-staged": "^12.4.1",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.6.2",
-    "standard-version": "^9.3.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "^28.0.2",
     "typescript": "^4.6.4",
-    "vite": "^2.9.9",
     "vue": "^3.2.33"
   }
 }

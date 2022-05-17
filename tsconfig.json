@@ -1,37 +1,65 @@
 {
+  //"files": [],
   "include": [
     "./src",
     "./.eslintrc.js",
     "./vite.config.ts"
   ],
-  "exclude": ["**/*.spec.ts"],
+  "exclude": [
+    "**/*.spec.ts",
+  ],
+  //"extends": "",
   "compilerOptions": {
+    /*
+     * for tsc & esbuild
+     */
     "target": "esnext",
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "types": ["vite/client"],
-    "importHelpers": false,
+    "baseUrl": "./",
+    //"paths": {},
+    "importsNotUsedAsValues": "remove",
+    "preserveValueImports": true,
+    "useDefineForClassFields": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+
+    /*
+     * for tsc --noEmit
+     */
+    "noEmit": false,
+    "emitDeclarationOnly": true,
     "declaration": true,
-    "sourceMap": false,
+    "declarationMap": true,
+    "declarationDir": "./types",
+
     "rootDir": "src",
     "outDir": "dist",
-    "strict": true,
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "node",
     "allowJs": true,
+    "checkJs": true,
+
+    "types": [
+      "vite/client", // import.meta.env
+    ],
+
+    "strict": true,
+    "alwaysStrict": true,
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictBindCallApply": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+    "useUnknownInCatchVariables": true,
+
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "jsx": "react",
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true,
-    "useDefineForClassFields": true
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "resolveJsonModule": false,
   }
 }
