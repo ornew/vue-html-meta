@@ -1,34 +1,42 @@
+import path from 'node:path'
 import { build } from 'esbuild'
-import glob from 'glob'
 
-const entryPoints = glob.sync('./src/**/*.ts')
+const targets = {
+  core: ['index'],
+  'server-renderer': ['index'],
+}
 
-build({
-  entryPoints,
-  outbase: './src',
-  outfile: 'dist/index.min.mjs',
-  format: "esm",
-  bundle: true,
-  minify: true,
-  sourcemap: true,
-  external: [
-    'vue',
-    './node_modules/*',
-  ],
-  watch: false,
+const formats = ['esm', 'cjs']
+
+const ext = {
+  esm: '.mjs',
+  cjs: '.cjs',
+}
+
+async function bundle(pkg, mod, format) {
+  return build({
+    entryPoints: [path.join('src', pkg, mod + '.ts')],
+    outbase: 'src',
+    outfile: path.join('dist', pkg, mod + ext[format]),
+    format,
+    bundle: true,
+    minify: true,
+    sourcemap: true,
+    external: [
+      'vue',
+      './node_modules/*',
+    ],
+    watch: false,
+  })
+}
+
+const procs = Object.entries(targets).flatMap(([pkg, mods]) => {
+  return mods.flatMap(mod => {
+    return formats.flatMap(async fmt => {
+      console.log(pkg, mod, fmt)
+      return bundle(pkg, mod, fmt)
+    })
+  })
 })
 
-build({
-  entryPoints,
-  outbase: './src',
-  outfile: 'dist/index.min.cjs',
-  format: "cjs",
-  bundle: true,
-  minify: true,
-  sourcemap: true,
-  external: [
-    'vue',
-    './node_modules/*',
-  ],
-  watch: false,
-})
+await Promise.all(procs)

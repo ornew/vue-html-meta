@@ -2,12 +2,6 @@
   //"files": [],
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.test.ts",
-    "./.eslintrc.js",
-    "./vite.config.ts"
-  ],
-  "exclude": [
-    "**/*.spec.ts",
   ],
   //"extends": "",
   "compilerOptions": {
