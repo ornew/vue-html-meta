@@ -31,12 +31,6 @@
     "prepare": "echo hello",
     "prepublishOnly": "run-s clean build"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn test",
-      "pre-push": "yarn lint && yarn test"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ornew/vue-html-meta.git"
