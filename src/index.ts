@@ -70,7 +70,7 @@ export const AppMeta = defineComponent({
       required: false
     },
     meta: {
-      type: Array as PropType<object[]>,
+      type: Array as PropType<{ [key: string]: string }[]>,
       required: false,
       default: () => []
     },

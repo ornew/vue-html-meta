@@ -51,6 +51,35 @@ const meta = createMeta()
 app.use(meta)
 ```
 
+## Components
+
+### `<AppMeta>`
+
+Props
+
+```typescript
+interface _AppMetaProps {
+  /*
+   * The text of <title>
+   */
+  title?: string
+
+  /*
+   * The attributes of <meta> tags
+   *
+   * e.g, <AppMeta meta="[{ a: '10', b: '20' }]" />
+   *   => <meta a="10" b="20" />
+   */
+  meta?: {key: string: string}[]
+
+  /*
+   * JSON-LD. This value will stringify to JSON and
+   * render to <script type="application/json+ld">{...}</script> in <head>
+   */
+  jsonld?: object
+}
+```
+
 ## Server Side Rendering (SSR)
 
 ### Vite.js
@@ -67,21 +96,14 @@ const html = template
   .replace(`<!--meta-->`, metaHtml)
 ```
 
-## Components
-
-### `<AppMeta>`
-
-```
-interface Props {
-  title?: string
-  meta?: Meta
-}
-
-interface Meta {
-}
-```
-
 ## Known Issues
+
+### Why not use Transport?
+
+This is intentionally to avoid hydration, checking and errors.
+`Transport` to the` head` tag can fail hydration.
+This is because HTTP middleware and other libraries can change the `head`.
+However there is room to consider the option of using transport.
 
 ## License
 
