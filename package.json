@@ -31,6 +31,9 @@
     "prepare": "echo hello",
     "prepublishOnly": "run-s clean build"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ornew/vue-html-meta.git"
