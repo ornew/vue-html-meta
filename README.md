@@ -1,5 +1,7 @@
 # vue-html-meta
 
+[![npm version](https://badge.fury.io/js/vue-html-meta.svg)](https://badge.fury.io/js/vue-html-meta)
+
 Easy rendering HTML meta tags for Vue.js (with SSR)
 
 ## Usage
