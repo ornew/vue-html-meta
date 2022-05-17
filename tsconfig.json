@@ -1,7 +1,8 @@
 {
   //"files": [],
   "include": [
-    "./src",
+    "./src/**/*.ts",
+    "./src/**/*.test.ts",
     "./.eslintrc.js",
     "./vite.config.ts"
   ],
@@ -21,6 +22,7 @@
     "useDefineForClassFields": true,
     "isolatedModules": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
 
     /*
      * for tsc --noEmit
@@ -40,6 +42,7 @@
     "checkJs": true,
 
     "types": [
+      "jest",
       "vue",
       //"vite/client", // need when use import.meta.env
     ],

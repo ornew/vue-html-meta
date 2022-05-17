@@ -1,8 +1,24 @@
-export default {
-  preset: "ts-jest/presets/default-esm",
+import tsjpresets from 'ts-jest/presets/index.js'
+
+const { defaults: tsj } = tsjpresets
+
+export const config = {
+  testEnvironment: 'jsdom',
+  moduleFileExtensions: [
+    "js",
+    "ts",
+    "json",
+    "vue",
+  ],
+  transform: {
+    ...tsj.transform,
+    ".*\\.(vue)$": "vue-jest",
+  },
   globals: {
-    "ts-jest": {
+    'ts-jest': {
       useESM: true,
     },
   },
 }
+console.log(config)
+export default config

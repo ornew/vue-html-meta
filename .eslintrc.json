@@ -6,28 +6,31 @@
   "parserOptions": {
     "parser": "@typescript-eslint/parser",
     "sourceType": "module",
-    "project": "./tsconfig.json",
+    "project": "./tsconfig.json"
   },
   "extends": [
     "plugin:unicorn/all",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier",
+    "prettier"
   ],
   "plugins": [
-    "@typescript-eslint",
+    "@typescript-eslint"
   ],
   "rules": {
     "unicorn/prevent-abbreviations": [
       "error",
       {
         "replacements": {
-          "props": false,
-        },
-      },
-    ],
+          "props": false
+        }
+      }
+    ]
   },
   "globals": {
     "Vue": "readable"
   },
+  "ignorePatterns": [
+    ".eslintrc.*"
+  ]
 }
