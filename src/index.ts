@@ -1,5 +1,5 @@
-import { ref, inject, watch, h, onMounted, onUnmounted, onServerPrefetch } from 'vue'
-import type { App, Ref } from 'vue'
+import { ref, inject, watch, h, defineComponent, onMounted, onUnmounted, onServerPrefetch } from 'vue'
+import type { App, VNode, PropType, Ref } from 'vue'
 
 const key = Symbol()
 
@@ -7,15 +7,9 @@ interface MetaPluginOptions {
   ssr?: boolean
 }
 
-interface _VNode {
-  tag: string
-  attributes?: object
-  text?: string
-}
-
 class MetaPlugin {
   private _options: MetaPluginOptions
-  private _tags: Ref<_VNode[]>
+  private _tags: Ref<VNode[]>
   private _els: HTMLElement[]
 
   constructor(options: MetaPluginOptions) {
@@ -35,7 +29,7 @@ class MetaPlugin {
     }
   }
 
-  setTags(tags: _VNode[]) {
+  setTags(tags: VNode[]) {
     this._tags.value = tags
   }
 
@@ -53,20 +47,20 @@ export function injectMeta(): MetaPlugin | undefined {
   return inject(key)
 }
 
-function toDOMElement({ tag, attributes, text }: _VNode): HTMLElement {
-  const element = document.createElement(tag)
-  if (attributes) {
-    for (const [k, v] of <[string, string][]>Object.entries(attributes)) {
-      element.setAttribute(k, v)
+function toDOMElement(node: VNode): HTMLElement {
+  const element = document.createElement(<string>node.type)
+  if (!!node.props) {
+    for (const [k, v] of Object.entries(node.props)) {
+      element.setAttribute(k, <string>v)
     }
   }
-  if (!!text) {
-    element.append(document.createTextNode(text))
+  if (!!node.children && typeof node.children === 'string') {
+    element.append(document.createTextNode(node.children))
   }
   return element
 }
 
-export const AppMeta = {
+export const AppMeta = defineComponent({
   name: 'AppMeta',
   inheritAttrs: false,
 
@@ -76,7 +70,7 @@ export const AppMeta = {
       required: false
     },
     meta: {
-      type: Array,
+      type: Array as PropType<object[]>,
       required: false,
       default: () => []
     },
@@ -86,22 +80,13 @@ export const AppMeta = {
     }
   },
 
-  setup({ title, meta, jsonld }: { title?: string; meta: object[]; jsonld?: object }) {
+  setup(props) {
     const $meta = injectMeta()
     const space = 2 /* import.meta.env.DEV ? 2 : undefined */
-    const tags: _VNode[] = [
-      { tag: 'title', attributes: {}, text: title },
-      ...meta?.map((attributes: object) => ({ tag: 'meta', attributes })),
-      ...(!jsonld
-        ? []
-        : [
-            {
-              tag: 'script',
-              attributes: { type: 'application/ld+json' },
-              text: JSON.stringify(jsonld, undefined, space)
-            }
-          ])
-    ]
+    const tags = <VNode[]>[h('title', {}, props.title), ...props.meta?.map((props) => h('meta', props))]
+    if (!props.jsonld) {
+      tags.push(h('script', { type: 'application/ld+json' }, JSON.stringify(props.jsonld, undefined, space)))
+    }
     onMounted(() => {
       $meta?.setTags(tags)
       //document.title = title
@@ -123,4 +108,6 @@ export const AppMeta = {
       */
     }
   }
-}
+})
+
+export default AppMeta

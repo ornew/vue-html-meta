@@ -40,6 +40,7 @@
     "checkJs": true,
 
     "types": [
+      "vue",
       //"vite/client", // need when use import.meta.env
     ],
 
