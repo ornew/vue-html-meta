@@ -1,6 +1,6 @@
 {
   "name": "vue-html-meta",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue",
   "type": "module",
   "module": "dist/core/index.mjs",
@@ -73,7 +73,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-unicorn": "^42.0.0",
     "glob": "^8.0.3",
-    "html-entities": "^2.3.3",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
@@ -85,5 +84,8 @@
     "typescript": "^4.6.4",
     "vue": "^3.2.33",
     "vue-jest": "^5.0.0-alpha.10"
+  },
+  "dependencies": {
+    "html-entities": "^2.3.3"
   }
 }
