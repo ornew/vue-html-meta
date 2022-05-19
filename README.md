@@ -8,25 +8,26 @@ Easy rendering HTML meta tags for Vue.js (with SSR)
 
 ```vue
 <script setup>
-import { AppMeta } from 'vue-html-meta'
+import { useMeta } from 'vue-html-meta'
 
-const jsonld = {
+const meta = useMeta()
+const { title, jsonld } = meta.mount()
+
+title.value = 'My Page'
+jsonld.value = {
   '@context': 'https://schema.org',
   ...
 }
+
+// Render meta tags in <head> until to unmount this component.
+//
+// <title>My Page</title>
+// <script type="application/json+ld">{
+//  "@context": "https://schema.org"
+// }</script>
 </script>
 
 <template>
-
-  <!-- Render meta tags in <head> until to unmount this component. -->
-  <AppMeta title="My Page" :jsonld="jsonld">
-  <!--
-    <title>My Page</title>
-    <script type="application/json+ld">{
-      "@context": "https://schema.org"
-    }</script>
-  -->
-
   <p>My Page</p>
   <!-- ... -->
 </template>
@@ -44,56 +45,66 @@ yarn add vue-html-meta
 Create and install the plugin to your Vue app:
 
 ```js
+import { createApp } from 'vue'
 import { createMeta } from 'vue-html-meta'
 
-const app = createSSRApp(App)
+const app = createApp(App)
 
 // create meta plugin
 const meta = createMeta()
 app.use(meta)
 ```
 
-## Components
-
-### `<AppMeta>`
-
-Props
+## API
 
 ```typescript
-interface _AppMetaProps {
+function createMeta(options?: MetaPluginOptions): MetaPlugin
+function useMeta(): MetaPlugin | undefined
+
+interface MetaPlugin {
+  mount(): MetaData
+}
+
+interface MetaData {
   /*
    * The text of <title>
    */
-  title?: string
+  title: Ref<string | undefined>
 
   /*
    * The attributes of <meta> tags
-   *
-   * e.g, <AppMeta meta="[{ a: '10', b: '20' }]" />
-   *   => <meta a="10" b="20" />
    */
-  meta?: {key: string: string}[]
+  meta: Ref<MetaProps[] | undefined>
 
   /*
    * JSON-LD. This value will stringify to JSON and
    * render to <script type="application/json+ld">{...}</script> in <head>
    */
-  jsonld?: object
+  jsonld: Ref<object | undefined>
+}
+
+type MetaProps = {
+  [key: string]: string
 }
 ```
 
 ## Server Side Rendering (SSR)
 
-### Vite.js
-
-Learn more about SSR: ["Server-Side Rendering | Vite"](https://vitejs.dev/guide/ssr.html)
-
 ```js
-// SSR logic
-const appHtml = await renderToString(app, ctx)
-const metaHtml = await renderMeta(meta)
+import { createSSRApp } from 'vue'
+import { renderToString } from 'vue/server-renderer'
+import { renderMeta } from 'vue-html-meta/server-renderer'
 
-const html = template
+const app = createSSRApp(/* ... */)
+
+const meta = createMeta({ ssr: true }) // XXX ssr=true
+app.use(meta)
+
+const ctx = {} // share SSR context
+const appHtml = await renderToString(app, ctx) // ctx will be taken metadata
+const metaHtml = await renderMeta(ctx) // should pass same ctx as used by app
+
+const html = htmlTemplate
   .replace(`<!--app-->`, appHtml)
   .replace(`<!--meta-->`, metaHtml)
 ```

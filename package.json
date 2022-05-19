@@ -3,32 +3,43 @@
   "version": "0.2.0",
   "description": "Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./types/main.d.ts",
+  "module": "dist/core/index.mjs",
+  "main": "dist/core/index.cjs",
+  "types": "types/core/index.d.ts",
   "files": [
     "/dist",
     "/types"
   ],
   "exports": {
-    "import": "dist/index.mjs",
-    "require": "dist/index.cjs"
+    ".": {
+      "module": "./dist/core/index.mjs",
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.cjs",
+      "types": "./types/core/index.d.ts",
+      "default": "./dist/core/index.cjs"
+    },
+    "./server-renderer": {
+      "module": "./dist/server-renderer/index.mjs",
+      "import": "./dist/server-renderer/index.mjs",
+      "require": "./dist/server-renderer/index.cjs",
+      "types": "./types/server-renderer/index.d.ts",
+      "default": "./dist/server-renderer/index.cjs"
+    }
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf dist types",
     "build": "run-p build:*",
     "lint": "run-p lint:*",
     "fix": "run-s fix:eslint fix:prettier",
     "test": "run-p test:*",
     "build:esbuild": "node ./scripts/build.mjs",
-    "build:tsc": "tsc",
+    "build:tsc": "tsc -p ./tsconfig.build.json",
     "test:unit": "jest --passWithNoTests",
     "lint:eslint": "eslint src",
     "fix:eslint": "eslint src --fix",
     "lint:prettier": "prettier --check -- \"src/**/*.{ts,tsx}\"",
     "fix:prettier": "prettier --write -- \"src/**/*.{ts,tsx}\"",
     "postrelease": "git push --follow-tags origin main && npm publish",
-    "prepare": "echo hello",
     "prepublishOnly": "run-s clean build"
   },
   "publishConfig": {
@@ -62,10 +73,12 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-unicorn": "^42.0.0",
     "glob": "^8.0.3",
+    "html-entities": "^2.3.3",
     "husky": "^8.0.1",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "npm-run-all": "^4.1.5",
+    "pinst": "^3.0.0",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "ts-jest": "^28.0.2",
