@@ -1,23 +1,16 @@
-import { mount, flushPromises } from '@vue/test-utils'
-
-import { createMeta, AppMeta } from '.'
-
-export const testCom = {
-  template: '<div>test</div>',
-  data() {
-    return {
-      admin: false
-    }
-  }
-}
+import { flushPromises, mount } from '@vue/test-utils'
+import { createMeta } from '.'
+import { TestComponent } from '../test'
 
 afterEach(() => {
   document.head.outerHTML = ''
 })
 
 test('render title', async () => {
+  document.head.outerHTML = ''
+
   const meta = createMeta()
-  const app = mount(AppMeta, {
+  const app = mount(TestComponent, {
     global: {
       plugins: [meta]
     },
@@ -28,7 +21,6 @@ test('render title', async () => {
 
   await flushPromises()
 
-  console.log(document.head.outerHTML)
   expect(document.title).toBe('test')
 
   const t1 = document.querySelector('head title')
@@ -42,7 +34,6 @@ test('render title', async () => {
     title: 'test-2'
   })
 
-  console.log(document.head.outerHTML)
   expect(document.title).toBe('test-2')
 
   const t2 = document.querySelector('head title')
@@ -56,7 +47,6 @@ test('render title', async () => {
 
   await flushPromises()
 
-  console.log(document.head.outerHTML)
   expect(document.title).toBe('')
 
   const t_ = document.querySelector('head title')
