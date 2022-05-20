@@ -11,20 +11,21 @@ Easy rendering HTML meta tags for Vue.js (with SSR)
 import { useMeta } from 'vue-html-meta'
 
 const meta = useMeta()
-const { title, jsonld } = meta.mount()
+const { title, meta, jsonld } = meta.mount()
 
 title.value = 'My Page'
+meta.value = [
+  { name: 'description', content: 'hello' }
+]
 jsonld.value = {
-  '@context': 'https://schema.org',
-  ...
+  '@context': 'https://schema.org'
 }
 
-// Render meta tags in <head> until to unmount this component.
+// Render meta tags in <head> until to unmount this component:
 //
 // <title>My Page</title>
-// <script type="application/json+ld">{
-//  "@context": "https://schema.org"
-// }</script>
+// <meta name="description" content="hello">
+// <script type="application/ld+json">{"@context":"https://schema.org"}</script>
 </script>
 
 <template>
@@ -35,7 +36,7 @@ jsonld.value = {
 
 ## Install
 
-```
+```sh
 npm inatll vue-html-meta
 
 # if you use yarn
@@ -44,7 +45,7 @@ yarn add vue-html-meta
 
 Create and install the plugin to your Vue app:
 
-```js
+```javascript
 import { createApp } from 'vue'
 import { createMeta } from 'vue-html-meta'
 
@@ -78,7 +79,7 @@ interface MetaData {
 
   /*
    * JSON-LD. This value will stringify to JSON and
-   * render to <script type="application/json+ld">{...}</script> in <head>
+   * render to <script type="application/ld+json">{...}</script> in <head>
    */
   jsonld: Ref<object | undefined>
 }
@@ -90,14 +91,14 @@ type MetaProps = {
 
 ## Server Side Rendering (SSR)
 
-```js
+```javascript
 import { createSSRApp } from 'vue'
 import { renderToString } from 'vue/server-renderer'
 import { renderMeta } from 'vue-html-meta/server-renderer'
 
 const app = createSSRApp(/* ... */)
 
-const meta = createMeta({ ssr: true }) // XXX ssr=true
+const meta = createMeta({ ssr: true }) // should be ssr is true
 app.use(meta)
 
 const ctx = {} // share SSR context
