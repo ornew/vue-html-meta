@@ -20,6 +20,8 @@ export interface MetaData {
   title: Ref<string | undefined>
   meta: Ref<MetaProps[] | undefined>
   jsonld: Ref<object | undefined>
+
+  unmount: () => void
 }
 
 export class MetaPlugin {
@@ -64,7 +66,6 @@ export class MetaPlugin {
     })
     onServerPrefetch(() => {
       const vnodes = this.toVNodes(title.value, meta.value, jsonld.value)
-      mount(vnodes) // ??
       const context = useSSRContext() ?? {}
       context['meta'] = vnodes
     })
@@ -73,7 +74,9 @@ export class MetaPlugin {
     return {
       title,
       meta,
-      jsonld
+      jsonld,
+
+      unmount
     }
   }
 
