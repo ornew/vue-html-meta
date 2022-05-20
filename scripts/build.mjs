@@ -24,6 +24,7 @@ async function bundle(pkg, mod, format) {
     sourcemap: true,
     external: [
       'vue',
+      'html-entities',
       './node_modules/*',
     ],
     watch: false,
