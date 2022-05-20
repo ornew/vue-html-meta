@@ -1,10 +1,10 @@
-import type { Component } from 'vue'
-import { createSSRApp } from 'vue'
+import type { PropType } from 'vue'
+import { createSSRApp, defineComponent, h, isReactive } from 'vue'
 import type { SSRContext } from 'vue/server-renderer'
 import { renderToString } from 'vue/server-renderer'
 import { renderMeta } from '.'
-import { createMeta } from '../core'
-import { TestComponent } from '../test'
+import type { MetaProps } from '../core'
+import { createMeta, useMeta } from '../core'
 
 describe('SSR', () => {
   test('title', async () => {
@@ -12,17 +12,120 @@ describe('SSR', () => {
     const meta = createMeta({
       ssr: true
     })
-    const app = createSSRApp(<Component>TestComponent, {
-      title: 'test'
-    })
+    const spy = jest.fn(() => true)
+    const app = createSSRApp(
+      defineComponent({
+        props: {
+          title: String
+        },
+        setup(props) {
+          const { title } = useMeta()?.mount() ?? {}
+          expect(title).not.toBeUndefined()
+          if (title) {
+            title.value = props.title
+            if (isReactive(props)) {
+              // when SSR mode, props is not reactive so not reached here
+              spy()
+            }
+          }
+          return () => h('div')
+        }
+      }),
+      {
+        title: 'test'
+      }
+    )
     app.use(meta)
 
     const context: SSRContext = {}
     const appHtml = await renderToString(app, context)
-    expect(appHtml).toBe('<div>test</div>')
+    expect(appHtml).toBe('<div></div>')
     expect(context).toHaveProperty('meta')
+    expect(spy.mock.calls.length).toBe(0)
 
     const metaHtml = await renderMeta(context)
     expect(metaHtml).toBe('<title>test</title>')
+  })
+
+  test('meta', async () => {
+    document.head.outerHTML = ''
+    const meta = createMeta({
+      ssr: true
+    })
+    const spy = jest.fn(() => true)
+    const app = createSSRApp(
+      defineComponent({
+        props: {
+          meta: Array as PropType<MetaProps[]>
+        },
+        setup(props) {
+          const { meta } = useMeta()?.mount() ?? {}
+          expect(meta).not.toBeUndefined()
+          if (meta) {
+            meta.value = props.meta
+            if (isReactive(props)) {
+              // when SSR mode, props is not reactive so not reached here
+              spy()
+            }
+          }
+          return () => h('div')
+        }
+      }),
+      {
+        meta: [{ name: 'description', content: 'hello' }]
+      }
+    )
+    app.use(meta)
+
+    const context: SSRContext = {}
+    const appHtml = await renderToString(app, context)
+    expect(appHtml).toBe('<div></div>')
+    expect(context).toHaveProperty('meta')
+    expect(spy.mock.calls.length).toBe(0)
+
+    const metaHtml = await renderMeta(context)
+    expect(metaHtml).toBe('<meta name="description" content="hello">')
+  })
+
+  test('jsonld', async () => {
+    document.head.outerHTML = ''
+    const meta = createMeta({
+      ssr: true
+    })
+    const spy = jest.fn(() => true)
+    const app = createSSRApp(
+      defineComponent({
+        props: {
+          jsonld: Object
+        },
+        setup(props) {
+          const { jsonld } = useMeta()?.mount() ?? {}
+          expect(jsonld).not.toBeUndefined()
+          if (jsonld) {
+            jsonld.value = props.jsonld
+            if (isReactive(props)) {
+              // when SSR mode, props is not reactive so not reached here
+              spy()
+            }
+          }
+          return () => h('div')
+        }
+      }),
+      {
+        jsonld: {
+          '@context': 'https://schema.org'
+        }
+      }
+    )
+    app.use(meta)
+
+    const context: SSRContext = {}
+    const appHtml = await renderToString(app, context)
+    expect(appHtml).toBe('<div></div>')
+    expect(context).toHaveProperty('meta')
+    expect(spy.mock.calls.length).toBe(0)
+
+    const metaHtml = await renderMeta(context)
+    expect(metaHtml).toBe('<script type="application/ld+json">{"@context":"https://schema.org"}</script>')
   })
 })
