@@ -20,11 +20,11 @@ jobs:
           cache: 'yarn'
       - run: yarn --frozen-lockfile
       - run: yarn docs:build
+        env:
+          BASE: /vue-html-meta/
       - uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/.vuepress/dist
           force_orphan: true
-        env:
-          BASE: /vue-html-meta/
