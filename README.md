@@ -2,16 +2,16 @@
 
 [![npm version](https://badge.fury.io/js/vue-html-meta.svg)](https://badge.fury.io/js/vue-html-meta)
 
-Easy rendering HTML meta tags for Vue.js (with SSR)
+- [Getting Started](docs/guide/getting-started.md)
+- [Server-Side Rendering](docs/guide/server-side-rendering.md)
 
-## Usage
+## How it works
 
 ```vue
 <script setup>
-import { useMeta } from 'vue-html-meta'
+import { mountMeta } from 'vue-html-meta'
 
-const meta = useMeta()
-const { title, meta, jsonld } = meta.mount()
+const { title, meta, jsonld } = metaMount()
 
 title.value = 'My Page'
 meta.value = [
@@ -20,52 +20,34 @@ meta.value = [
 jsonld.value = {
   '@context': 'https://schema.org'
 }
-
-// Render meta tags in <head> until to unmount this component:
-//
-// <title>My Page</title>
-// <meta name="description" content="hello">
-// <script type="application/ld+json">{"@context":"https://schema.org"}</script>
 </script>
-
-<template>
-  <p>My Page</p>
-  <!-- ... -->
-</template>
 ```
 
-## Install
+```html
+<head>
+  <title>My Page</title>
+  <meta name="description" content="hello">
+  <script type="application/ld+json">{"@context":"https://schema.org"}</script>
+</head>
+```
 
 ```sh
 npm inatll vue-html-meta
-
-# if you use yarn
+# or
 yarn add vue-html-meta
-```
-
-Create and install the plugin to your Vue app:
-
-```javascript
-import { createApp } from 'vue'
-import { createMeta } from 'vue-html-meta'
-
-const app = createApp(App)
-
-// create meta plugin
-const meta = createMeta()
-app.use(meta)
 ```
 
 ## API
 
-```typescript
-function createMeta(options?: MetaPluginOptions): MetaPlugin
-function useMeta(): MetaPlugin | undefined
+### createMeta
 
-interface MetaPlugin {
-  mount(): MetaData
-}
+- `createMeta(options?: MetaPluginOptions): MetaPlugin`
 
+### mountMeta
+
+- `mountMeta(): MetaData | undefined`
+
+```
 interface MetaData {
   /*
    * The text of <title>
@@ -87,27 +69,6 @@ interface MetaData {
 type MetaProps = {
   [key: string]: string
 }
-```
-
-## Server Side Rendering (SSR)
-
-```javascript
-import { createSSRApp } from 'vue'
-import { renderToString } from 'vue/server-renderer'
-import { renderMeta } from 'vue-html-meta/server-renderer'
-
-const app = createSSRApp(/* ... */)
-
-const meta = createMeta({ ssr: true }) // should be ssr is true
-app.use(meta)
-
-const ctx = {} // share SSR context
-const appHtml = await renderToString(app, ctx) // ctx will be taken metadata
-const metaHtml = await renderMeta(ctx) // should pass same ctx as used by app
-
-const html = htmlTemplate
-  .replace(`<!--app-->`, appHtml)
-  .replace(`<!--meta-->`, metaHtml)
 ```
 
 ## Known Issues

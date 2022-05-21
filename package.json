@@ -39,6 +39,8 @@
     "fix:eslint": "eslint src --fix",
     "lint:prettier": "prettier --check -- \"src/**/*.{ts,tsx}\"",
     "fix:prettier": "prettier --write -- \"src/**/*.{ts,tsx}\"",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "postrelease": "git push --follow-tags origin main && npm publish",
     "prepublishOnly": "run-s clean build"
   },
@@ -83,7 +85,8 @@
     "ts-jest": "^28.0.2",
     "typescript": "^4.6.4",
     "vue": "^3.2.33",
-    "vue-jest": "^5.0.0-alpha.10"
+    "vue-jest": "^5.0.0-alpha.10",
+    "vuepress": "^2.0.0-beta.45"
   },
   "dependencies": {
     "html-entities": "^2.3.3"
