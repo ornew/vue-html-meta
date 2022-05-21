@@ -6,9 +6,9 @@ actions:
   - text: Get Started
     link: /guide/getting-started.html
     type: primary
-features:
-  - title: Simplicity First
-    details: Minimal
+#features:
+#  - title: Simplicity First
+#    details: Minimal
 ---
 
 ## How it works
@@ -17,7 +17,7 @@ features:
 <script setup>
 import { mountMeta } from 'vue-html-meta'
 
-const { title, meta, jsonld } = metaMount()
+const { title, meta, jsonld } = mountMeta()
 
 title.value = 'My Page'
 meta.value = [
@@ -35,28 +35,6 @@ jsonld.value = {
   <meta name="description" content="hello">
   <script type="application/ld+json">{"@context":"https://schema.org"}</script>
 </head>
-```
-
-## Install
-
-```sh
-npm inatll vue-html-meta
-
-# if you use yarn
-yarn add vue-html-meta
-```
-
-Create and install the plugin to your Vue app:
-
-```javascript
-import { createApp } from 'vue'
-import { createMeta } from 'vue-html-meta'
-
-const app = createApp(App)
-
-// create meta plugin
-const meta = createMeta()
-app.use(meta)
 ```
 
 ## License

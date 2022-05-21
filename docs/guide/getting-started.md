@@ -6,7 +6,7 @@
 
 - Vue 3+
 
-This library won't not support Vue 2 and below.
+This library won't support Vue 2 and below.
 
 ## Installation
 
@@ -37,7 +37,7 @@ It returns `ref`s for setting meta information.
 <script setup>
 import { mountMeta } from 'vue-html-meta'
 
-const { title, meta, jsonld } = metaMount()
+const { title, meta, jsonld } = mountMeta()
 
 title.value = 'My Page'
 meta.value = [
@@ -67,7 +67,7 @@ Changing the value of the `ref`s reacts to the DOM.
 <script setup>
 import { mountMeta } from 'vue-html-meta'
 
-const { title } = metaMount()
+const { title } = mountMeta()
 
 title.value = 'loading'
 
@@ -76,14 +76,14 @@ api.get.then((value) => title.value = value.title)
 </script>
 ```
 
-You can also use `reactive` to write:
+You can also use `reactive`:
 
 ```vue
 <script setup>
 import { reactive } from 'vue'
 import { mountMeta } from 'vue-html-meta'
 
-const meta = reactive(metaMount())
+const meta = reactive(mountMeta())
 
 meta.title = 'My Page'
 meta.meta = [
@@ -109,11 +109,11 @@ For example, this is not the desired state, but it is correct behavior:
 
 ```javascript
 // in Component A setup
-const { title } = metaMount()
+const { title } = mountMeta()
 title.value = 'A'
 
 // in Component B setup
-const { title } = metaMount()
+const { title } = mountMeta()
 title.value = 'B'
 ```
 
@@ -140,7 +140,7 @@ to share `ref`s between components.
 
 // ...
 
-const { title } = metaMount()
+const { title } = mountMeta()
 
 function updateTitle(value) {
   title.value = value
@@ -156,7 +156,7 @@ updateTitle('A')
 
 ```vue
 <script setup>
-const { title } = metaMount()
+const { title } = mountMeta()
 
 // computed_title will be computed very complicatedly, probably
 const computed_title = /* your store */

@@ -11,7 +11,7 @@
 <script setup>
 import { mountMeta } from 'vue-html-meta'
 
-const { title, meta, jsonld } = metaMount()
+const { title, meta, jsonld } = mountMeta()
 
 title.value = 'My Page'
 meta.value = [
