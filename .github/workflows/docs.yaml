@@ -8,7 +8,8 @@ on:
 jobs:
   docs:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -19,9 +20,9 @@ jobs:
           cache: 'yarn'
       - run: yarn --frozen-lockfile
       - run: yarn docs:build
-      - uses: crazy-max/ghaction-github-pages@v2
+      - uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          target_branch: gh-pages
-          build_dir: docs/.vuepress/dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/.vuepress/dist
+          force_orphan: true
