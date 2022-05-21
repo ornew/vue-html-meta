@@ -1,6 +1,15 @@
 import { defaultTheme, defineUserConfig } from 'vuepress'
 
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      BASE: '/' | '/${string}/'
+    }
+  }
+}
+
 export default defineUserConfig({
+  base: process.env.BASE ?? '/',
   locales: {
     '/': {
       lang: 'en-US',

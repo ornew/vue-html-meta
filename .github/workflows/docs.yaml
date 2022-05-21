@@ -26,3 +26,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs/.vuepress/dist
           force_orphan: true
+        env:
+          BASE: /vue-html-meta/
