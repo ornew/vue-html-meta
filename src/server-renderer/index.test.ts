@@ -4,7 +4,7 @@ import type { SSRContext } from 'vue/server-renderer'
 import { renderToString } from 'vue/server-renderer'
 import { renderMeta } from '.'
 import type { MetaProps } from '../core'
-import { createMeta, useMeta } from '../core'
+import { createMeta, mountMeta } from '../core'
 
 describe('SSR', () => {
   test('title', async () => {
@@ -19,7 +19,7 @@ describe('SSR', () => {
           title: String
         },
         setup(props) {
-          const { title } = useMeta()?.mount() ?? {}
+          const { title } = mountMeta() ?? {}
           expect(title).not.toBeUndefined()
           if (title) {
             title.value = props.title
@@ -44,7 +44,7 @@ describe('SSR', () => {
     expect(spy.mock.calls.length).toBe(0)
 
     const metaHtml = await renderMeta(context)
-    expect(metaHtml).toBe('<title>test</title>')
+    expect(metaHtml).toBe('<title data-ssr>test</title>')
   })
 
   test('meta', async () => {
@@ -59,7 +59,7 @@ describe('SSR', () => {
           meta: Array as PropType<MetaProps[]>
         },
         setup(props) {
-          const { meta } = useMeta()?.mount() ?? {}
+          const { meta } = mountMeta() ?? {}
           expect(meta).not.toBeUndefined()
           if (meta) {
             meta.value = props.meta
@@ -84,7 +84,7 @@ describe('SSR', () => {
     expect(spy.mock.calls.length).toBe(0)
 
     const metaHtml = await renderMeta(context)
-    expect(metaHtml).toBe('<meta name="description" content="hello">')
+    expect(metaHtml).toBe('<meta name="description" content="hello" data-ssr>')
   })
 
   test('jsonld', async () => {
@@ -99,7 +99,7 @@ describe('SSR', () => {
           jsonld: Object
         },
         setup(props) {
-          const { jsonld } = useMeta()?.mount() ?? {}
+          const { jsonld } = mountMeta() ?? {}
           expect(jsonld).not.toBeUndefined()
           if (jsonld) {
             jsonld.value = props.jsonld
@@ -126,6 +126,6 @@ describe('SSR', () => {
     expect(spy.mock.calls.length).toBe(0)
 
     const metaHtml = await renderMeta(context)
-    expect(metaHtml).toBe('<script type="application/ld+json">{"@context":"https://schema.org"}</script>')
+    expect(metaHtml).toBe('<script type="application/ld+json" data-ssr>{"@context":"https://schema.org"}</script>')
   })
 })

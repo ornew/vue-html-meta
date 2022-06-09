@@ -29,7 +29,7 @@
 
     "rootDir": "src",
     "outDir": "dist",
-    "lib": ["dom", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "allowJs": true,

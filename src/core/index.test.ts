@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { PropType } from 'vue'
 import { h, isReactive, watch } from 'vue'
 import type { MetaProps } from '.'
-import { createMeta, useMeta } from '.'
+import { createMeta, mountMeta } from '.'
 
 describe('mount', () => {
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('mount', () => {
           title: String
         },
         setup(props) {
-          const { title } = useMeta()?.mount() ?? {}
+          const { title } = mountMeta() ?? {}
           if (title) {
             title.value = props.title
             if (isReactive(props)) {
@@ -87,7 +87,7 @@ describe('mount', () => {
           meta: Array as PropType<MetaProps[]>
         },
         setup(props) {
-          const { meta } = useMeta()?.mount() ?? {}
+          const { meta } = mountMeta() ?? {}
           if (meta) {
             meta.value = props.meta
             if (isReactive(props)) {
@@ -158,7 +158,7 @@ describe('mount', () => {
           jsonld: Object
         },
         setup(props) {
-          const { jsonld } = useMeta()?.mount() ?? {}
+          const { jsonld } = mountMeta() ?? {}
           if (jsonld) {
             jsonld.value = props.jsonld
             if (isReactive(props)) {

@@ -26,9 +26,11 @@ export interface MetaData {
 
 export class MetaPlugin {
   private _options: MetaPluginOptions
+  private _cleanedSSR: boolean
 
   constructor(options?: MetaPluginOptions) {
     this._options = options || {}
+    this._cleanedSSR = false
   }
 
   mount(): MetaData {
@@ -46,6 +48,7 @@ export class MetaPlugin {
     }
     const mount = (next: VNode[]) => {
       if (!this._options?.ssr) {
+        this.cleanSSR()
         unmount()
         els = next.map((c) => toDOMElement(c))
         for (const element of els) {
@@ -85,6 +88,18 @@ export class MetaPlugin {
     app.provide(key, this)
   }
 
+  private cleanSSR() {
+    if (this._options?.ssr) {
+      return
+    }
+    if (!this._cleanedSSR) {
+      for (const element of document.querySelectorAll<HTMLElement>('head [data-ssr]')) {
+        element.remove()
+      }
+      this._cleanedSSR = true
+    }
+  }
+
   private toVNodes(title?: string, meta?: MetaProps[], jsonld?: object): VNode[] {
     let vnodes: VNode[] = []
     if (title) {
@@ -109,6 +124,11 @@ export function createMeta(options?: MetaPluginOptions): MetaPlugin {
 
 export function useMeta(): MetaPlugin | undefined {
   return (getCurrentInstance() && inject(key)) || activeMeta
+}
+
+export function mountMeta(): MetaData | undefined {
+  const meta = useMeta()
+  return meta?.mount()
 }
 
 function toDOMElement(node: VNode): HTMLElement {
