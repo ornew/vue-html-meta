@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="generator" content="VuePress 2.0.0-beta.45">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
+    <title>vue-html-meta</title><meta name="description" content="The simple Vue-Composable to render HTML meta tags (support SSR)">
+    <link rel="modulepreload" href="/vue-html-meta/assets/app.c3917a5c.js"><link rel="modulepreload" href="/vue-html-meta/assets/404.html.dd2a7ce4.js"><link rel="modulepreload" href="/vue-html-meta/assets/404.html.f166316b.js"><link rel="prefetch" href="/vue-html-meta/assets/index.html.8a6d5716.js"><link rel="prefetch" href="/vue-html-meta/assets/getting-started.html.dc90e4c3.js"><link rel="prefetch" href="/vue-html-meta/assets/server-side-rendering.html.f34412f1.js"><link rel="prefetch" href="/vue-html-meta/assets/index.html.25deb6ac.js"><link rel="prefetch" href="/vue-html-meta/assets/getting-started.html.fd4c15e8.js"><link rel="prefetch" href="/vue-html-meta/assets/server-side-rendering.html.453b012f.js"><link rel="prefetch" href="/vue-html-meta/assets/404.4fa9cdb3.js"><link rel="prefetch" href="/vue-html-meta/assets/Layout.fefa53e3.js">
+    <link rel="stylesheet" href="/vue-html-meta/assets/style.1157c303.css">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="theme-container"><div class="theme-default-content"><h1>404</h1><blockquote>Looks like we&#39;ve got some broken links.</blockquote><a href="/vue-html-meta/" class="">Take me home</a></div></div><!----><!--]--></div>
+    <script type="module" src="/vue-html-meta/assets/app.c3917a5c.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,1 @@
+const e={key:"v-30af1d36",path:"/guide/server-side-rendering.html",title:"Server-Side Rendering (SSR)",lang:"en-US",frontmatter:{},excerpt:"",headers:[],git:{updatedTime:1653102734e3,contributors:[{name:"Arata Furukawa",email:"old.river.new@gmail.com",commits:1}]},filePathRelative:"guide/server-side-rendering.md"};export{e as data};

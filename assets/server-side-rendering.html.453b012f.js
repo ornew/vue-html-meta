@@ -1,0 +1,23 @@
+import{_ as n,d as s}from"./app.c3917a5c.js";const a={},e=s(`<h1 id="server-side-rendering-ssr" tabindex="-1"><a class="header-anchor" href="#server-side-rendering-ssr" aria-hidden="true">#</a> Server-Side Rendering (SSR)</h1><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">import</span> <span class="token punctuation">{</span> createSSRApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&#39;vue&#39;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> renderToString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&#39;vue/server-renderer&#39;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> renderMeta <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">&#39;vue-html-meta/server-renderer&#39;</span>
+
+<span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">createSSRApp</span><span class="token punctuation">(</span><span class="token comment">/* ... */</span><span class="token punctuation">)</span>
+
+<span class="token comment">// should be ssr is true</span>
+<span class="token keyword">const</span> meta <span class="token operator">=</span> <span class="token function">createMeta</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token literal-property property">ssr</span><span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+app<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>meta<span class="token punctuation">)</span>
+
+<span class="token comment">// share SSR context</span>
+<span class="token keyword">const</span> ctx <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token comment">// ctx will be taken metadata</span>
+<span class="token keyword">const</span> appHtml <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">renderToString</span><span class="token punctuation">(</span>app<span class="token punctuation">,</span> ctx<span class="token punctuation">)</span>
+
+<span class="token comment">// should pass same ctx as used for rendering app</span>
+<span class="token keyword">const</span> metaHtml <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">renderMeta</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+
+<span class="token keyword">const</span> html <span class="token operator">=</span> htmlTemplate
+  <span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">\`</span><span class="token string">&lt;!--app--&gt;</span><span class="token template-punctuation string">\`</span></span><span class="token punctuation">,</span> appHtml<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">\`</span><span class="token string">&lt;!--meta--&gt;</span><span class="token template-punctuation string">\`</span></span><span class="token punctuation">,</span> metaHtml<span class="token punctuation">)</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,2);function t(p,o){return e}var i=n(a,[["render",t],["__file","server-side-rendering.html.vue"]]);export{i as default};
