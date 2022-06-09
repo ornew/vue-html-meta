@@ -1,6 +1,6 @@
 {
   "name": "vue-html-meta",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Easy setting HTML tags in head (title, meta, jsonld, etc...) for Vue",
   "type": "module",
   "module": "dist/core/index.mjs",
